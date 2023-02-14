@@ -82,8 +82,9 @@ class __SignInFormState extends State<_SignInForm> {
 
     _onLoginButtonPressed() {
       if (_key.currentState!.validate()) {
-        _loginBloc.add(LoginInWithEmailButtonPressed(
-            email: _emailController.text, password: _passwordController.text));
+        _loginBloc.add(LoginInWithUsernameButtonPressed(
+            username: _emailController.text,
+            password: _passwordController.text));
       } else {
         setState(() {
           _autoValidate = true;
@@ -160,8 +161,8 @@ class __SignInFormState extends State<_SignInForm> {
                   //RaisedButton(
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                         minimumSize: const Size.fromHeight(40),
-                      ),
+                      minimumSize: const Size.fromHeight(40),
+                    ),
                     //color: Theme.of(context).primaryColor,
                     //textColor: Colors.white,
                     //padding: const EdgeInsets.all(16),

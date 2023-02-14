@@ -32,9 +32,7 @@ class LoginResponse {
     data['refreshToken'] = refreshToken;
     return data;
   }
-  
 }
-
 
 class LoginRequest {
   String? username;
