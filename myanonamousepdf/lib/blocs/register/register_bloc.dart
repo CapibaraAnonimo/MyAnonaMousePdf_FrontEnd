@@ -27,6 +27,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async {
     emit(RegisterLoading());
     try {
+      print('ButtonPressed: ' + event.username);
       final user = await _authenticationService.register(event.username,
           event.password, event.verifyPassword, event.email, event.fullName);
       if (user != null) {

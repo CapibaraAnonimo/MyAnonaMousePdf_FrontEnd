@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
 class RegisterResponse {
   String? id;
   String? userName;
@@ -24,9 +28,19 @@ class RegisterResponse {
     email = json['email'];
     avatar = json['avatar'];
     fullName = json['fullName'];
-    createdAt = json['createdAt'];
+    createdAt = DateTime.parse(reformat(json['createdAt']));
     token = json['token'];
     refreshToken = json['refreshToken'];
+  }
+
+  reformat(String dateTime) {
+    String day = dateTime.substring(0, 2);
+    String month = dateTime.substring(3, 5);
+    String year = dateTime.substring(6, 10);
+    String rest = dateTime.substring(11);
+    String newString = year + '-' + month + '-' + day + ' ' + rest;
+    print(newString);
+    return newString;
   }
 
   Map<String, dynamic> toJson() {
@@ -36,7 +50,7 @@ class RegisterResponse {
     data['email'] = email;
     data['avatar'] = avatar;
     data['fullName'] = fullName;
-    data['createdAt'] = createdAt;
+    data['createdAt'] = createdAt.toString();
     data['token'] = token;
     data['refreshToken'] = refreshToken;
     return data;
@@ -71,7 +85,7 @@ class RegisterRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['userName'] = username;
+    data['username'] = username;
     data['password'] = password;
     data['verifyPassword'] = verifyPassword;
     data['email'] = email;

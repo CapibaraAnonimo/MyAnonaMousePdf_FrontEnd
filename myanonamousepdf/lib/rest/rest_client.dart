@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,14 +5,9 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
-
 class ApiConstants {
-
   static String baseUrl = "http://localhost:8080";
   //static String baseUrl = "http://10.0.2.2:8080";
-  
-
-
 }
 
 class HeadersApiInterceptor implements InterceptorContract {
@@ -30,56 +23,48 @@ class HeadersApiInterceptor implements InterceptorContract {
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async => data;
+  Future<ResponseData> interceptResponse({required ResponseData data}) async =>
+      data;
 }
 
 @Order(-10)
 @singleton
 class RestClient {
-
   RestClient();
 
   //final _httpClient = http.Client();
-  final _httpClient = InterceptedClient.build(interceptors: [HeadersApiInterceptor()]);
-
+  final _httpClient =
+      InterceptedClient.build(interceptors: [HeadersApiInterceptor()]);
 
   Future<dynamic> get(String url) async {
-
     try {
+      Uri uri = Uri.parse(ApiConstants.baseUrl + url);
 
-        Uri uri = Uri.parse(ApiConstants.baseUrl + url);
-
-        final response = await _httpClient.get(uri);
-        var responseJson = _response(response);
-        return responseJson;
-
-
-    } on SocketException catch(ex) {
+      final response = await _httpClient.get(uri);
+      var responseJson = _response(response);
+      return responseJson;
+    } on SocketException catch (ex) {
       throw FetchDataException('No internet connection: ${ex.message}');
     }
-
   }
 
   Future<dynamic> post(String url, dynamic body) async {
-    print('body: ' + body.toString());
+    print('body: ' + body.username);
 
-      try {
+    try {
+      Uri uri = Uri.parse(ApiConstants.baseUrl + url);
+      print(uri.toString());
 
-        Uri uri = Uri.parse(ApiConstants.baseUrl + url);
-        print(uri.toString());
-
-        final response = await _httpClient.post(uri, body: jsonEncode(body));
-        var responseJson = _response(response);
-        return responseJson;
-
-    } on SocketException catch(ex) {
+      final response = await _httpClient.post(uri, body: jsonEncode(body));
+      var responseJson = _response(response);
+      return responseJson;
+    } on SocketException catch (ex) {
       throw FetchDataException('No internet connection: ${ex.message}');
     }
-
   }
 
-
   dynamic _response(http.Response response) {
+    print(response.statusCode);
     switch (response.statusCode) {
       case 200:
       case 201:
@@ -118,8 +103,7 @@ class CustomException implements Exception {
 }
 
 class FetchDataException extends CustomException {
-  FetchDataException([String? message])
-      : super(message, "");
+  FetchDataException([String? message]) : super(message, "");
 }
 
 class BadRequestException extends CustomException {
@@ -127,12 +111,11 @@ class BadRequestException extends CustomException {
 }
 
 class AuthenticationException extends CustomException {
-  AuthenticationException([message]) : super(message,"");
+  AuthenticationException([message]) : super(message, "");
 }
 
-
 class UnauthorizedException extends CustomException {
-  UnauthorizedException([message]) : super(message,"");
+  UnauthorizedException([message]) : super(message, "");
 }
 
 class NotFoundException extends CustomException {

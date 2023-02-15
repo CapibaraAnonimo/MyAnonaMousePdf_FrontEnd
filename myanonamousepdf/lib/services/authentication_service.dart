@@ -80,12 +80,22 @@ class JwtAuthenticationService extends AuthenticationService {
   }
 
   @override
-  Future<User> register(String username, String password,
-      String verifyPassword, String email, String fullName) async {
-        RegisterResponse response = await _authenticationRepository.doRegister(username = username, password = password, verifyPassword = verifyPassword, email = email, fullName = fullName);
-        await _localStorageService.saveToDisk('user', jsonEncode(response.toJson()));
-        return User(name: response.fullName ?? '', email: response.userName ?? '', accessToken: response.token ?? '');
-      }
+  Future<User> register(String username, String password, String verifyPassword,
+      String email, String fullName) async {
+    print('register: ' + username);
+    RegisterResponse response = await _authenticationRepository.doRegister(
+        username = username,
+        password = password,
+        verifyPassword = verifyPassword,
+        email = email,
+        fullName = fullName);
+    await _localStorageService.saveToDisk(
+        'user', jsonEncode(response.toJson()));
+    return User(
+        name: response.fullName ?? '',
+        email: response.userName ?? '',
+        accessToken: response.token ?? '');
+  }
 
   @override
   Future<void> signOut() async {
