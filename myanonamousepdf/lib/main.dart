@@ -5,33 +5,31 @@ import 'package:myanonamousepdf/blocs/blocs.dart';
 import 'package:myanonamousepdf/services/services.dart';
 import 'package:myanonamousepdf/pages/pages.dart';
 
-
-
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
   //await SharedPreferences.getInstance();
   setupAsyncDependencies();
   configureDependencies();
   //await getIt.allReady();
-  
-    
-    runApp(BlocProvider<AuthenticationBloc>(
-        create: (context) {
-          final authService = getIt<JwtAuthenticationService>();
-          return AuthenticationBloc(authService)..add(AppLoaded());
-        },
-        child: MyAnonaMousePdf(),
-      ));
 
+  runApp(BlocProvider<AuthenticationBloc>(
+    create: (context) {
+      final authService = getIt<JwtAuthenticationService>();
+      return AuthenticationBloc(authService)..add(AppLoaded());
+    },
+    child: MyAnonaMousePdf(),
+  ));
 }
+
 class MyAnonaMousePdf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Authentication Demo',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+          primarySwatch: Colors.blueGrey,
+          appBarTheme:
+              AppBarTheme(backgroundColor: Colors.black.withOpacity(0.5))),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {

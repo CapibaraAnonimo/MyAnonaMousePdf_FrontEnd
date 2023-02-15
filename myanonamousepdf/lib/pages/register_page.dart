@@ -19,7 +19,8 @@ class RegisterPage extends StatelessWidget {
             if (state is AuthenticationNotAuthenticated) {
               return _AuthForm();
             }
-            return Text('');
+            Navigator.of(context).pop();
+            return Text('Se devería volver para atras');
           },
         ),
       ),
@@ -64,11 +65,6 @@ class __RegisterFormState extends State<_RegisterForm> {
 
     _onRegisterButtonPressed() {
       if (_key.currentState!.validate()) {
-        print(_usernameController.text +
-          _passwordController.text +
-          _verifyPasswordController.text +
-          _emailController.text +
-          _fullNameController.text);
         _registerBloc.add(RegisterButtonPressed(
           username: _usernameController.text,
           password: _passwordController.text,
