@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myanonamousepdf/config/locator.dart';
+import 'package:myanonamousepdf/pages/register_page.dart';
 import '../blocs/blocs.dart';
 import '../services/services.dart';
+import 'pages.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -154,7 +156,12 @@ class __SignInFormState extends State<_SignInForm> {
                   SizedBox(
                     width: 100,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage()));
+                      },
                       child: Text('Register'),
                     ),
                   ),

@@ -1,3 +1,3 @@
-import 'register_bloc.dart';
-import 'register_event.dart';
-import 'register_state.dart';
+export 'register_bloc.dart';
+export 'register_event.dart';
+export 'register_state.dart';

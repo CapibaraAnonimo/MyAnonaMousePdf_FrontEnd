@@ -1,6 +1,7 @@
 class RegisterResponse {
   String? id;
   String? userName;
+  String? email;
   String? avatar;
   String? fullName;
   DateTime? createdAt;
@@ -10,6 +11,7 @@ class RegisterResponse {
   RegisterResponse(
       {this.id,
       this.userName,
+      this.email,
       this.avatar,
       this.fullName,
       this.createdAt,
@@ -19,6 +21,7 @@ class RegisterResponse {
   RegisterResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
+    email = json['email'];
     avatar = json['avatar'];
     fullName = json['fullName'];
     createdAt = json['createdAt'];
@@ -30,6 +33,7 @@ class RegisterResponse {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['userName'] = userName;
+    data['email'] = email;
     data['avatar'] = avatar;
     data['fullName'] = fullName;
     data['createdAt'] = createdAt;
@@ -43,6 +47,7 @@ class RegisterRequest {
   String? username;
   String? password;
   String? verifyPassword;
+  String? email;
   String? avatar;
   String? fullName;
 
@@ -50,6 +55,7 @@ class RegisterRequest {
     this.username,
     this.password,
     this.verifyPassword,
+    this.email,
     this.avatar,
     this.fullName,
   });
@@ -58,6 +64,7 @@ class RegisterRequest {
     username = json['username'];
     password = json['password'];
     verifyPassword = json['verifyPassword'];
+    email = json['email'];
     avatar = json['avatar'];
     fullName = json['fullName'];
   }
@@ -67,6 +74,7 @@ class RegisterRequest {
     data['userName'] = username;
     data['password'] = password;
     data['verifyPassword'] = verifyPassword;
+    data['email'] = email;
     data['avatar'] = avatar;
     data['fullName'] = fullName;
     return data;

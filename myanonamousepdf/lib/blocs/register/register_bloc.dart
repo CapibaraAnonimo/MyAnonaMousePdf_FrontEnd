@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:myanonamousepdf/blocs/blocs.dart';
 import 'package:myanonamousepdf/models/models.dart';
 import 'register_event.dart';
 import 'register_state.dart';
@@ -25,6 +26,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     emit(RegisterLoading());
-    //TODO hacer el metodo de registro
+    try {
+      final user = await _authenticationService.register(event.username,
+          event.password, event.verifyPassword, event.email, event.fullName);
+      if (user != null) {
+        _authenticationBloc.add(UserLoggedIn(user: user));
+        emit(RegisterSuccess());
+      } else {
+        emit(RegisterFailure(error: 'Something very weird just happened'));
+      }
+    } on Exception catch (e) {
+      emit(RegisterFailure(error: e.toString()));
+    }
   }
 }

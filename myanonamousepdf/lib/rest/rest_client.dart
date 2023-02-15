@@ -61,10 +61,12 @@ class RestClient {
   }
 
   Future<dynamic> post(String url, dynamic body) async {
+    print('body: ' + body.toString());
 
       try {
 
         Uri uri = Uri.parse(ApiConstants.baseUrl + url);
+        print(uri.toString());
 
         final response = await _httpClient.post(uri, body: jsonEncode(body));
         var responseJson = _response(response);

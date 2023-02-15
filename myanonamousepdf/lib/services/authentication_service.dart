@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 //import 'dart:developer';
 
@@ -13,6 +12,8 @@ import 'package:myanonamousepdf/repositories/repositories.dart';
 abstract class AuthenticationService {
   Future<User?> getCurrentUser();
   Future<User?> signInWithEmailAndPassword(String email, String password);
+  Future<User?> register(String username, String password,
+      String verifyPassword, String email, String fullName);
   Future<void> signOut();
 }
 /*
@@ -43,36 +44,51 @@ class FakeAuthenticationService extends AuthenticationService {
 //@Singleton(as: AuthenticationService)
 @singleton
 class JwtAuthenticationService extends AuthenticationService {
-
   late AuthenticationRepository _authenticationRepository;
   late LocalStorageService _localStorageService;
 
   JwtAuthenticationService() {
     _authenticationRepository = GetIt.I.get<AuthenticationRepository>();
-    GetIt.I.getAsync<LocalStorageService>().then((value) => _localStorageService = value);
+    GetIt.I
+        .getAsync<LocalStorageService>()
+        .then((value) => _localStorageService = value);
   }
-
 
   @override
   Future<User?> getCurrentUser() async {
     String? loggedUser = _localStorageService.getFromDisk("user");
     if (loggedUser != null) {
       var user = LoginResponse.fromJson(jsonDecode(loggedUser));
-      return User(email: user.username ?? "", name: user.fullName ?? "", accessToken: user.token ?? ""); 
+      return User(
+          email: user.username ?? "",
+          name: user.fullName ?? "",
+          accessToken: user.token ?? "");
     }
     return null;
   }
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
-    LoginResponse response = await _authenticationRepository.doLogin(email, password);
-    await _localStorageService.saveToDisk('user', jsonEncode(response.toJson()));
-    return User(email: response.username ?? "", name: response.fullName ?? "", accessToken: response.token ?? "");
+    LoginResponse response =
+        await _authenticationRepository.doLogin(email, password);
+    await _localStorageService.saveToDisk(
+        'user', jsonEncode(response.toJson()));
+    return User(
+        email: response.username ?? "",
+        name: response.fullName ?? "",
+        accessToken: response.token ?? "");
   }
+
+  @override
+  Future<User> register(String username, String password,
+      String verifyPassword, String email, String fullName) async {
+        RegisterResponse response = await _authenticationRepository.doRegister(username = username, password = password, verifyPassword = verifyPassword, email = email, fullName = fullName);
+        await _localStorageService.saveToDisk('user', jsonEncode(response.toJson()));
+        return User(name: response.fullName ?? '', email: response.userName ?? '', accessToken: response.token ?? '');
+      }
 
   @override
   Future<void> signOut() async {
     await _localStorageService.deleteFromDisk("user");
   }
-
 }
