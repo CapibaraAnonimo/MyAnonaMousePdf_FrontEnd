@@ -4,6 +4,7 @@ import 'package:myanonamousepdf/config/locator.dart';
 import 'package:myanonamousepdf/blocs/blocs.dart';
 import 'package:myanonamousepdf/services/services.dart';
 import 'package:myanonamousepdf/pages/pages.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,8 @@ void main() {
     },
     child: MyAnonaMousePdf(),
   ));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
 }
 
 class MyAnonaMousePdf extends StatelessWidget {
@@ -28,8 +31,8 @@ class MyAnonaMousePdf extends StatelessWidget {
       title: 'Authentication Demo',
       theme: ThemeData(
           primarySwatch: Colors.blueGrey,
-          appBarTheme:
-              AppBarTheme(backgroundColor: Colors.black.withOpacity(0.5))),
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.black.withOpacity(0.5), elevation: 0)),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {

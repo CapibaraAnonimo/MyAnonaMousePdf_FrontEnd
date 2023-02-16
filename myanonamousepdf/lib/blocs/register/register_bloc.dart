@@ -31,8 +31,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final user = await _authenticationService.register(event.username,
           event.password, event.verifyPassword, event.email, event.fullName);
       if (user != null) {
-        _authenticationBloc.add(UserLoggedIn(user: user));
         emit(RegisterSuccess());
+        await Future.delayed(const Duration(seconds: 5));
+        _authenticationBloc.add(UserLoggedIn(user: user));
       } else {
         emit(RegisterFailure(error: 'Something very weird just happened'));
       }

@@ -1,26 +1,38 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myanonamousepdf/config/locator.dart';
 import '../blocs/blocs.dart';
 import '../services/services.dart';
+import 'dart:math' as math;
 import 'pages.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Register'),
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        title: const Text('Register'),
       ),
-      body: SafeArea(
-        minimum: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationNotAuthenticated) {
               return _AuthForm();
             }
             Navigator.of(context).pop();
-            return Text('Se devería volver para atras');
+            return const Text('Se devería volver para atras');
           },
         ),
       ),
@@ -50,7 +62,8 @@ class _RegisterForm extends StatefulWidget {
   __RegisterFormState createState() => __RegisterFormState();
 }
 
-class __RegisterFormState extends State<_RegisterForm> {
+class __RegisterFormState extends State<_RegisterForm>
+    with TickerProviderStateMixin {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -62,6 +75,10 @@ class __RegisterFormState extends State<_RegisterForm> {
   @override
   Widget build(BuildContext context) {
     final _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    late final AnimationController _controller = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    )..repeat();
 
     _onRegisterButtonPressed() {
       if (_key.currentState!.validate()) {
@@ -92,6 +109,17 @@ class __RegisterFormState extends State<_RegisterForm> {
               child: CircularProgressIndicator(),
             );
           }
+          if (state is RegisterSuccess) {
+            return RotationTransition(
+              turns: Tween<double>(begin: 0, end: 2).animate(CurvedAnimation(
+                  parent: _controller, curve: Curves.bounceOut)),
+              child: const Icon(
+                Icons.done_outline_rounded,
+                size: 100,
+                color: Colors.green,
+              ),
+            );
+          }
           return Form(
             key: _key,
             autovalidateMode: _autoValidate
@@ -102,7 +130,7 @@ class __RegisterFormState extends State<_RegisterForm> {
                 //crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Username',
@@ -121,9 +149,9 @@ class __RegisterFormState extends State<_RegisterForm> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         filled: true,
                         isDense: true,
@@ -139,9 +167,9 @@ class __RegisterFormState extends State<_RegisterForm> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Verify Password',
                         filled: true,
                         isDense: true,
@@ -157,9 +185,9 @@ class __RegisterFormState extends State<_RegisterForm> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Email',
                         filled: true,
                         isDense: true,
@@ -174,9 +202,9 @@ class __RegisterFormState extends State<_RegisterForm> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Full Name',
                         filled: true,
                         isDense: true,
@@ -199,10 +227,10 @@ class __RegisterFormState extends State<_RegisterForm> {
                     //textColor: Colors.white,
                     //padding: const EdgeInsets.all(16),
                     //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                    child: Text('REGISTER'),
                     onPressed: state is RegisterLoading
                         ? () {}
                         : _onRegisterButtonPressed,
+                    child: Text('REGISTER'),
                   )
                 ],
               ),
