@@ -60,9 +60,12 @@ class JwtAuthenticationService extends AuthenticationService {
     if (loggedUser != null) {
       var user = LoginResponse.fromJson(jsonDecode(loggedUser));
       return User(
-          email: user.username ?? "",
-          name: user.fullName ?? "",
-          accessToken: user.token ?? "");
+          id: user.id ?? "",
+          name: user.fullName ?? '',
+          userName: user.username ?? '',
+          createdAt: user.createdAt ?? DateTime.now(),
+          avatar: user.avatar,
+          accessToken: user.token ?? '');
     }
     return null;
   }
@@ -74,9 +77,12 @@ class JwtAuthenticationService extends AuthenticationService {
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
     return User(
-        email: response.username ?? "",
-        name: response.fullName ?? "",
-        accessToken: response.token ?? "");
+          id: response.id ?? "",
+          name: response.fullName ?? '',
+          userName: response.username ?? '',
+          createdAt: response.createdAt ?? DateTime.now(),
+          avatar: response.avatar,
+          accessToken: response.token ?? '');
   }
 
   @override
@@ -92,9 +98,12 @@ class JwtAuthenticationService extends AuthenticationService {
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
     return User(
-        name: response.fullName ?? '',
-        email: response.userName ?? '',
-        accessToken: response.token ?? '');
+          id: response.id ?? "",
+          name: response.fullName ?? '',
+          userName: response.userName ?? '',
+          createdAt: response.createdAt ?? DateTime.now(),
+          avatar: response.avatar,
+          accessToken: response.token ?? '');
   }
 
   @override

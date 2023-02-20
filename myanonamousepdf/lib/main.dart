@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myanonamousepdf/config/locator.dart';
 import 'package:myanonamousepdf/blocs/blocs.dart';
+import 'package:myanonamousepdf/pages/books.dart';
 import 'package:myanonamousepdf/services/services.dart';
 import 'package:myanonamousepdf/pages/pages.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +43,7 @@ class MyAnonaMousePdf extends StatelessWidget {
             );
           }
           // otherwise show login page
-          return LoginPage();
+          return BookListPage();//LoginPage();
         },
       ),
     );

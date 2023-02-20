@@ -9,7 +9,7 @@ abstract class BookListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AppLoaded extends BookListEvent {}
+class Loading extends BookListEvent {}
 
 class BookPressed extends BookListEvent {
   final String id;

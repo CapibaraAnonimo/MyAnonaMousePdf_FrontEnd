@@ -1,44 +1,62 @@
 import 'package:bloc/bloc.dart';
-import 'package:myanonamousepdf/blocs/blocs.dart';
 import 'package:myanonamousepdf/models/models.dart';
+import '../../config/locator.dart';
 import 'book_list_event.dart';
 import 'book_list_state.dart';
-import '../authentication/authentication.dart';
 import '../../exceptions/exceptions.dart';
 import '../../services/services.dart';
 
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final AuthenticationBloc _authenticationBloc;
+class BookListBloc extends Bloc<BookListEvent, BookListState> {
   final AuthenticationService _authenticationService;
 
-  RegisterBloc(AuthenticationBloc authenticationBloc,
-      AuthenticationService authenticationService)
-      : assert(authenticationBloc != null),
-        assert(authenticationService != null),
-        _authenticationBloc = authenticationBloc,
+  BookListBloc(AuthenticationService authenticationService)
+      : assert(authenticationService != null),
         _authenticationService = authenticationService,
-        super(RegisterInitial()) {
-    on<RegisterButtonPressed>(__onRegisterButtonPressed);
+        super(BookListInitial()) {
+    on<Loading>(_onAppLoaded);
+    on<BookPressed>(__onBookPressed);
   }
 
-  __onRegisterButtonPressed(
-    RegisterButtonPressed event,
-    Emitter<RegisterState> emit,
+  _onAppLoaded(
+    Loading event,
+    Emitter<BookListState> emit,
   ) async {
-    emit(RegisterLoading());
+    print('Se llega al onAppLoaded');
+    final bookService = getIt<JwtBookService>();
+
+    emit(BookListLoading());
     try {
-      print('ButtonPressed: ' + event.username);
-      final user = await _authenticationService.register(event.username,
-          event.password, event.verifyPassword, event.email, event.fullName);
-      if (user != null) {
-        emit(RegisterSuccess());
-        await Future.delayed(const Duration(seconds: 5));
-        _authenticationBloc.add(UserLoggedIn(user: user));
+      await Future.delayed(Duration(milliseconds: 500)); // a simulated delay
+      final currentUser = await _authenticationService.getCurrentUser();
+      final books = await bookService.getAllBooks();
+
+      if(books.length >= 0) {
+        emit(BookListSuccess(books: books));
+      }
+      /*if (currentUser != null) {
+        emit(BookListAuthenticated(user: currentUser));
       } else {
-        emit(RegisterFailure(error: 'Something very weird just happened'));
+        emit(BookListAuthenticated());
+      }*/
+    } on Exception catch (e) {
+      emit(BookListFailure(
+          error: 'An unknown error occurred: ${e.toString()}'));
+    }
+  }
+
+  __onBookPressed(BookPressed event, Emitter<BookListState> emit) async {
+    emit(BookListLoading());
+    try {
+      final user = await _authenticationService.getCurrentUser();
+      if (user != null) {
+        /*emit(BookListSuccess());
+        await Future.delayed(const Duration(seconds: 5));
+        //_authenticationBloc.add(UserLoggedIn(user: user));*/
+      } else {
+        emit(BookListFailure(error: 'Something very weird just happened'));
       }
     } on Exception catch (e) {
-      emit(RegisterFailure(error: e.toString()));
+      emit(BookListFailure(error: e.toString()));
     }
   }
 }
