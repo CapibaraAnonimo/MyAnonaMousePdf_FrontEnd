@@ -21,7 +21,7 @@ class User {
     id = json['id'];
     userName = json['userName'];
     name = json['name'];
-    createdAt = json['createdAt'];
+    createdAt = DateTime.tryParse(reformat(json['createdAt']));
     accessToken = json['accessToken'];
     avatar = json['avatar'];
   }
@@ -36,4 +36,14 @@ class User {
     data['avatar'] = avatar;
     return data;
   }
+}
+
+reformat(String dateTime) {
+  String day = dateTime.substring(0, 2);
+  String month = dateTime.substring(3, 5);
+  String year = dateTime.substring(6, 10);
+  String rest = dateTime.substring(11);
+  String newString = year + '-' + month + '-' + day + ' ' + rest;
+  print(newString);
+  return newString;
 }

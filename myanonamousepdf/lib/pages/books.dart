@@ -37,7 +37,7 @@ class BookListPage extends StatelessWidget {
             child: BlocBuilder<BookListBloc, BookListState>(
               builder: (context, state) {
                 final _bookBloc = BlocProvider.of<BookListBloc>(context);
-                _bookBloc.add(Loading());
+
                 if (state is BookListSuccess) {
                   List<BookResponse> books = state.books;
                   List<Cards> booksWidget = [];
@@ -52,6 +52,7 @@ class BookListPage extends StatelessWidget {
                     ],
                   );
                 } else {
+                  _bookBloc.add(Loading());
                   return const Text('data');
                 }
               },

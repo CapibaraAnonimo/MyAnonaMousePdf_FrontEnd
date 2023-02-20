@@ -1,11 +1,10 @@
-import 'dart:ffi';
 import 'models.dart';
 
 class BookResponse {
   String? id;
   DateTime? uploadDate;
   User? uploader;
-  Long? amountDownloads;
+  int? amountDownloads;
   String? category;
   bool? vip;
   String? book;
@@ -27,8 +26,8 @@ class BookResponse {
 
   BookResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    uploadDate = json['uploadDate'];
-    uploader = json['uploader'];
+    uploadDate = DateTime.tryParse(reformat(json['uploadDate']));
+    uploader = User.fromJson(json['uploader']);
     amountDownloads = json['amountDownloads'];
     category = json['category'];
     vip = json['vip'];

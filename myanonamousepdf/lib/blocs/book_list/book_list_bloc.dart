@@ -30,7 +30,7 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
       final currentUser = await _authenticationService.getCurrentUser();
       final books = await bookService.getAllBooks();
 
-      if(books.length >= 0) {
+      if (books.length >= 0) {
         emit(BookListSuccess(books: books));
       }
       /*if (currentUser != null) {
@@ -39,8 +39,8 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
         emit(BookListAuthenticated());
       }*/
     } on Exception catch (e) {
-      emit(BookListFailure(
-          error: 'An unknown error occurred: ${e.toString()}'));
+      emit(
+          BookListFailure(error: 'An unknown error occurred: ${e.toString()}'));
     }
   }
 

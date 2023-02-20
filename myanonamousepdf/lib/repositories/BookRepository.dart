@@ -30,6 +30,15 @@ class BookRepository {
 
     print('Se llega al repositorio');
     var jsonResponse = await _client.get(url);
-    return BookResponse.fromJson(jsonDecode(jsonResponse));
+    //Iterable l = json.decode(jsonResponse['content']);
+    //return List<BookResponse>.from(l.map((model) => BookResponse.fromJson(model)));
+    Map<String, dynamic> response = jsonDecode(jsonResponse);
+    List<dynamic> list = response['content'];
+    List<BookResponse> bookList = [];
+    for (var book in list) {
+      bookList.add(BookResponse.fromJson(book));
+    }
+    return bookList;
+    //return BookResponse.fromJson(jsonDecode(jsonResponse));
   }
 }
