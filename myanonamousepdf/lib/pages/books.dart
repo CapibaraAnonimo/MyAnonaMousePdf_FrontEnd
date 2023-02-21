@@ -52,7 +52,7 @@ class BookListPage extends StatelessWidget {
     return BlocProvider<BookListBloc>(
       create: (context) => BookListBloc(authService),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 54, 69, 79),
+        backgroundColor: Color.fromARGB(255, 20, 20, 20),
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           flexibleSpace: ClipRect(
@@ -119,8 +119,9 @@ class Cards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
       child: Card(
+        color: Color.fromARGB(255, 32, 32, 32),
         child: InkWell(
           onTap: () {},
           child: Row(
@@ -132,13 +133,26 @@ class Cards extends StatelessWidget {
                 ),
                 child: Image.network(
                   'https://innovating.capital/wp-content/uploads/2021/05/vertical-placeholder-image.jpg',
-                  width: 75,
+                  width: 90,
                 ),
               ),
               Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(book.title!),
-                  Text(book.author!),
+                  Text(
+                    book.title!,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    book.author!,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 145, 145, 145),
+                    ),
+                  ),
                 ],
               )
             ],
