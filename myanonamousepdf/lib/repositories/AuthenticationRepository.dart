@@ -22,7 +22,7 @@ class AuthenticationRepository {
 
     var jsonResponse = await _client.post(
         url, LoginRequest(username: username, password: password));
-    return LoginResponse.fromJson(jsonDecode(jsonResponse));
+    return User.fromJson(jsonDecode(jsonResponse));
   }
 
   Future<dynamic> doRegister(String username, String password,
@@ -49,6 +49,6 @@ class AuthenticationRepository {
             fullName: fullName,
             avatar: ''));
     print(RegisterResponse.fromJson(jsonDecode(jsonResponse)));
-    return RegisterResponse.fromJson(jsonDecode(jsonResponse));
+    return User.fromJson(jsonDecode(jsonResponse));
   }
 }

@@ -32,14 +32,15 @@ class JwtBookService extends BookService {
   Future<User?> getCurrentUser() async {
     String? loggedUser = _localStorageService.getFromDisk("user");
     if (loggedUser != null) {
-      var user = LoginResponse.fromJson(jsonDecode(loggedUser));
-      return User(
+      var user = User.fromJson(jsonDecode(loggedUser));
+      return user;
+      /*return User(
           id: user.id ?? "",
           name: user.fullName ?? '',
           userName: user.username ?? '',
           createdAt: user.createdAt ?? DateTime.now(),
           avatar: user.avatar,
-          accessToken: user.token ?? '');
+          accessToken: user.token ?? '');*/
     }
     return null;
   }
@@ -49,7 +50,7 @@ class JwtBookService extends BookService {
     print("Se llega al servicio");
     List<BookResponse> response = await _bookRepository.getAllBooks();
     await _localStorageService.saveToDisk(
-        'bookList', jsonEncode(jsonEncode(response)));
+        'bookList', jsonEncode(response));
     return response;
   }
 }

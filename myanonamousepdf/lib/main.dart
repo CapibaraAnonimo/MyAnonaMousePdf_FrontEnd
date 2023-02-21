@@ -38,12 +38,12 @@ class MyAnonaMousePdf extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {
             // show home page
-            return HomePage(
+            return BookListPage(context: context, user: state.user,);/*HomePage(
               user: state.user,
-            );
+            );*/
           }
           // otherwise show login page
-          return BookListPage();//LoginPage();
+          return LoginPage();
         },
       ),
     );

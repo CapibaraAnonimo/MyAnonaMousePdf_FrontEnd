@@ -26,12 +26,13 @@ class BookResponse {
 
   BookResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    uploadDate = DateTime.tryParse(reformat(json['uploadDate']));
+    uploadDate = DateTime.tryParse(reformat2(json['uploadDate']));
     uploader = User.fromJson(json['uploader']);
     amountDownloads = json['amountDownloads'];
     category = json['category'];
     vip = json['vip'];
     book = json['book'];
+    author = json['author'];
     title = json['title'];
     description = json['description'];
   }
@@ -39,7 +40,7 @@ class BookResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['uploadDate'] = uploadDate;
+    data['uploadDate'] = dateToString(uploadDate!);
     data['uploader'] = uploader;
     data['amountDownloads'] = amountDownloads;
     data['category'] = category;

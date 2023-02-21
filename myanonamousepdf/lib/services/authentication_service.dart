@@ -58,38 +58,40 @@ class JwtAuthenticationService extends AuthenticationService {
   Future<User?> getCurrentUser() async {
     String? loggedUser = _localStorageService.getFromDisk("user");
     if (loggedUser != null) {
-      var user = LoginResponse.fromJson(jsonDecode(loggedUser));
-      return User(
+      var user = User.fromJson(jsonDecode(loggedUser));
+      return user;
+      /*return User(
           id: user.id ?? "",
           name: user.fullName ?? '',
           userName: user.username ?? '',
           createdAt: user.createdAt ?? DateTime.now(),
           avatar: user.avatar,
-          accessToken: user.token ?? '');
+          accessToken: user.token ?? '');*/
     }
     return null;
   }
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
-    LoginResponse response =
+    User response =
         await _authenticationRepository.doLogin(email, password);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-    return User(
+        return response;
+    /*return User(
           id: response.id ?? "",
           name: response.fullName ?? '',
           userName: response.username ?? '',
           createdAt: response.createdAt ?? DateTime.now(),
           avatar: response.avatar,
-          accessToken: response.token ?? '');
+          accessToken: response.token ?? '');*/
   }
 
   @override
   Future<User> register(String username, String password, String verifyPassword,
       String email, String fullName) async {
     print('register: ' + username);
-    RegisterResponse response = await _authenticationRepository.doRegister(
+    User response = await _authenticationRepository.doRegister(
         username = username,
         password = password,
         verifyPassword = verifyPassword,
@@ -97,13 +99,14 @@ class JwtAuthenticationService extends AuthenticationService {
         fullName = fullName);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-    return User(
+        return response;
+    /*return User(
           id: response.id ?? "",
           name: response.fullName ?? '',
           userName: response.userName ?? '',
-          createdAt: response.createdAt ?? DateTime.now(),
+          //createdAt: response.createdAt ?? DateTime.now(),
           avatar: response.avatar,
-          accessToken: response.token ?? '');
+          accessToken: response.token ?? '');*/
   }
 
   @override
