@@ -56,6 +56,7 @@ class JwtAuthenticationService extends AuthenticationService {
 
   @override
   Future<User?> getCurrentUser() async {
+    //_localStorageService..deleteFromDisk("user");
     String? loggedUser = _localStorageService.getFromDisk("user");
     if (loggedUser != null) {
       var user = User.fromJson(jsonDecode(loggedUser));

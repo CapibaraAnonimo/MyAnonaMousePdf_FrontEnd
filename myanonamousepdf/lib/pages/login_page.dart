@@ -107,6 +107,9 @@ class __SignInFormState extends State<_SignInForm> {
               child: CircularProgressIndicator(),
             );
           }
+          if (state is LoginSuccess) {
+            Navigator.of(context).pop();
+          }
           return Form(
             key: _key,
             autovalidateMode: _autoValidate
@@ -117,7 +120,23 @@ class __SignInFormState extends State<_SignInForm> {
                 //crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   TextFormField(
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
                     decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                       labelText: 'Username',
                       filled: true,
                       isDense: true,
@@ -136,7 +155,23 @@ class __SignInFormState extends State<_SignInForm> {
                     height: 12,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                       labelText: 'Password',
                       filled: true,
                       isDense: true,
@@ -162,7 +197,10 @@ class __SignInFormState extends State<_SignInForm> {
                             MaterialPageRoute(
                                 builder: (context) => RegisterPage()));
                       },
-                      child: Text('Register'),
+                      child: Text(
+                        'Register',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                   //RaisedButton(
@@ -174,7 +212,10 @@ class __SignInFormState extends State<_SignInForm> {
                     //textColor: Colors.white,
                     //padding: const EdgeInsets.all(16),
                     //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                    child: Text('LOG IN'),
+                    child: Text(
+                      'LOG IN',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     onPressed:
                         state is LoginLoading ? () {} : _onLoginButtonPressed,
                   )

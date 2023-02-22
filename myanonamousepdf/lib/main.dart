@@ -31,11 +31,13 @@ class MyAnonaMousePdf extends StatelessWidget {
     return MaterialApp(
       title: 'Authentication Demo',
       theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          scaffoldBackgroundColor: Color.fromARGB(255, 30, 30, 30),
-          appBarTheme: AppBarTheme(
-              backgroundColor: Color.fromARGB(255, 45, 45, 45).withOpacity(0.5),
-              elevation: 0)),
+        primarySwatch: Colors.blueGrey,
+        scaffoldBackgroundColor: Color.fromARGB(255, 30, 30, 30),
+        appBarTheme: AppBarTheme(
+            backgroundColor: Color.fromARGB(255, 45, 45, 45).withOpacity(0.5),
+            elevation: 0),
+        
+      ),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {

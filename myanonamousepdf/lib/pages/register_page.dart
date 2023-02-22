@@ -25,7 +25,7 @@ class RegisterPage extends StatelessWidget {
         title: const Text('Register'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is AuthenticationNotAuthenticated) {
@@ -132,7 +132,23 @@ class __RegisterFormState extends State<_RegisterForm>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                         labelText: 'Username',
                         filled: true,
                         isDense: true,
@@ -151,7 +167,23 @@ class __RegisterFormState extends State<_RegisterForm>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                         labelText: 'Password',
                         filled: true,
                         isDense: true,
@@ -169,7 +201,23 @@ class __RegisterFormState extends State<_RegisterForm>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                         labelText: 'Verify Password',
                         filled: true,
                         isDense: true,
@@ -187,7 +235,23 @@ class __RegisterFormState extends State<_RegisterForm>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                         labelText: 'Email',
                         filled: true,
                         isDense: true,
@@ -204,7 +268,23 @@ class __RegisterFormState extends State<_RegisterForm>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                      color: Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      fillColor: Color.fromARGB(255, 32, 32, 32),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Color.fromARGB(255, 165, 165, 165),
+                      )),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 165, 165, 165),
+                        ),
+                      ),
                         labelText: 'Full Name',
                         filled: true,
                         isDense: true,

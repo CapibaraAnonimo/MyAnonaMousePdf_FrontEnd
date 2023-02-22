@@ -24,7 +24,7 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
-    name = json['name'];
+    name = json['fullName'];
     //createdAt = DateTime.tryParse(reformat(json['createdAt']));
     accessToken = json['accessToken'];
     avatar = json['avatar'];
@@ -36,7 +36,7 @@ class User {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['userName'] = userName;
-    data['name'] = name;
+    data['fullName'] = name;
     //data['createdAt'] = dateToString(createdAt!);
     data['accessToken'] = accessToken;
     data['avatar'] = avatar;

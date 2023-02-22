@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myanonamousepdf/blocs/authentication/authentication.dart';
 import 'package:myanonamousepdf/config/locator.dart';
 import 'package:myanonamousepdf/models/book.dart';
+import 'package:myanonamousepdf/pages/login_page.dart';
 import '../blocs/book_list/book_list.dart';
 import '../models/user.dart';
 import '../services/services.dart';
@@ -42,7 +43,9 @@ class BookListPage extends StatelessWidget {
     }
   }
 
-  void logIn() {}
+  void logIn() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
