@@ -11,9 +11,9 @@ import 'package:myanonamousepdf/repositories/AuthenticationRepository.dart'
     as _i4;
 import 'package:myanonamousepdf/repositories/BookRepository.dart' as _i5;
 import 'package:myanonamousepdf/rest/rest_client.dart' as _i3;
-import 'package:myanonamousepdf/services/authentication_service.dart' as _i7;
+import 'package:myanonamousepdf/services/authentication_service.dart' as _i6;
 import 'package:myanonamousepdf/services/book_service.dart'
-    as _i6; // ignore_for_file: unnecessary_lambdas
+    as _i7; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 extension GetItInjectableX on _i1.GetIt {
@@ -30,8 +30,8 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i3.RestClient>(_i3.RestClient());
     gh.singleton<_i4.AuthenticationRepository>(_i4.AuthenticationRepository());
     gh.singleton<_i5.BookRepository>(_i5.BookRepository());
-    gh.singleton<_i6.JwtBookService>(_i6.JwtBookService());
-    gh.singleton<_i7.JwtAuthenticationService>(_i7.JwtAuthenticationService());
+    gh.singleton<_i6.JwtAuthenticationService>(_i6.JwtAuthenticationService());
+    gh.singleton<_i7.JwtBookService>(_i7.JwtBookService());
     return this;
   }
 }

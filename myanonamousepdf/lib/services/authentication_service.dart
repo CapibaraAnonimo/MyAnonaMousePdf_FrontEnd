@@ -15,6 +15,8 @@ abstract class AuthenticationService {
   Future<User?> register(String username, String password,
       String verifyPassword, String email, String fullName);
   Future<void> signOut();
+  Future<int?> getCurrentPage();
+  Future<int?> getMaxPages();
 }
 /*
 class FakeAuthenticationService extends AuthenticationService {
@@ -73,12 +75,29 @@ class JwtAuthenticationService extends AuthenticationService {
   }
 
   @override
+  Future<int?> getCurrentPage() async {
+    int currentPage = _localStorageService.getFromDisk("currentPage");
+    if (currentPage != null) {
+      return currentPage;
+    }
+    return null;
+  }
+
+  @override
+  Future<int?> getMaxPages() async {
+    int maxPages = _localStorageService.getFromDisk("maxPages");
+    if (maxPages != null) {
+      return maxPages;
+    }
+    return null;
+  }
+
+  @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
-    User response =
-        await _authenticationRepository.doLogin(email, password);
+    User response = await _authenticationRepository.doLogin(email, password);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-        return response;
+    return response;
     /*return User(
           id: response.id ?? "",
           name: response.fullName ?? '',
@@ -100,7 +119,7 @@ class JwtAuthenticationService extends AuthenticationService {
         fullName = fullName);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-        return response;
+    return response;
     /*return User(
           id: response.id ?? "",
           name: response.fullName ?? '',

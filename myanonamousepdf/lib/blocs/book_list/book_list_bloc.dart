@@ -29,9 +29,11 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
       await Future.delayed(Duration(milliseconds: 500)); // a simulated delay
       final currentUser = await _authenticationService.getCurrentUser();
       final books = await bookService.getAllBooks();
-
+      final currentPage = await _authenticationService.getCurrentPage();
+      final maxPages = await _authenticationService.getMaxPages();
+      
       if (books.length >= 0) {
-        emit(BookListSuccess(books: books));
+        emit(BookListSuccess(books: books, currentPage: currentPage!, maxPages: maxPages!));
       }
       /*if (currentUser != null) {
         emit(BookListAuthenticated(user: currentUser));

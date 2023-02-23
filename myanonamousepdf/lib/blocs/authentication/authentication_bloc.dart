@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:myanonamousepdf/services/authentication_service.dart';
 
 import 'authentication_event.dart';
 import 'authentication_state.dart';
-import '../../services/services.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationService _authenticationService;

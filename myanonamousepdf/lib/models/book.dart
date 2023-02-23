@@ -1,28 +1,28 @@
 import 'models.dart';
 
 class BookResponse {
-  String? id;
-  DateTime? uploadDate;
-  User? uploader;
-  int? amountDownloads;
-  String? category;
-  bool? vip;
-  String? book;
-  String? title;
-  String? author;
-  String? description;
+  late String id;
+  late DateTime? uploadDate;
+  late User uploader;
+  late int amountDownloads;
+  late String category;
+  late bool vip;
+  late String book;
+  late String title;
+  late String author;
+  late String description;
 
   BookResponse(
-      {this.id,
-      this.uploadDate,
-      this.uploader,
-      this.amountDownloads,
-      this.category,
-      this.vip,
-      this.book,
-      this.title,
-      this.author,
-      this.description});
+      {required this.id,
+      required this.uploadDate,
+      required this.uploader,
+      required this.amountDownloads,
+      required this.category,
+      required this.vip,
+      required this.book,
+      required this.title,
+      required this.author,
+      required this.description});
 
   BookResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -6,14 +6,20 @@ import 'package:injectable/injectable.dart';
 import 'package:myanonamousepdf/models/models.dart';
 
 import 'package:myanonamousepdf/rest/rest.dart';
+import 'package:myanonamousepdf/services/localstorage_service.dart';
 
-@Order(0)
+
+@Order(-1)
 @singleton
 class BookRepository {
   late RestClient _client;
+  late LocalStorageService _localStorageService;
 
   BookRepository() {
     _client = GetIt.I.get<RestClient>();
+    GetIt.I
+        .getAsync<LocalStorageService>()
+        .then((value) => _localStorageService = value);
     //_client = RestClient();
   }
 
@@ -30,10 +36,10 @@ class BookRepository {
 
     print('Se llega al repositorio');
     var jsonResponse = await _client.get(url);
-    //Iterable l = json.decode(jsonResponse['content']);
-    //return List<BookResponse>.from(l.map((model) => BookResponse.fromJson(model)));
     Map<String, dynamic> response = jsonDecode(jsonResponse);
     List<dynamic> list = response['content'];
+    _localStorageService.saveToDisk('currentPage', response['number']);
+    _localStorageService.saveToDisk('maxPages', response['totalPages']);
     List<BookResponse> bookList = [];
     for (var book in list) {
       bookList.add(BookResponse.fromJson(book));

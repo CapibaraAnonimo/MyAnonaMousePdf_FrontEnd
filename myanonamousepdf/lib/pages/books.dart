@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:myanonamousepdf/blocs/authentication/authentication.dart';
 import 'package:myanonamousepdf/config/locator.dart';
 import 'package:myanonamousepdf/models/book.dart';
@@ -44,7 +45,8 @@ class BookListPage extends StatelessWidget {
   }
 
   void logIn() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
@@ -55,52 +57,24 @@ class BookListPage extends StatelessWidget {
     return BlocProvider<BookListBloc>(
       create: (context) => BookListBloc(authService),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 20, 20, 20),
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          flexibleSpace: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.transparent,
+          backgroundColor: Color.fromARGB(255, 20, 20, 20),
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            flexibleSpace: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  color: Colors.transparent,
+                ),
               ),
             ),
+            title: const Text('Books'),
+            actions: [
+              addBook(),
+              log(_authBloc),
+            ],
           ),
-          title: const Text('Books'),
-          actions: [
-            addBook(),
-            log(_authBloc),
-          ],
-        ),
-        body: BlocProvider<BookListBloc>(
-          create: (context) => BookListBloc(authService),
-          child: BlocBuilder<BookListBloc, BookListState>(
-            builder: (context, state) {
-              final _bookBloc = BlocProvider.of<BookListBloc>(context);
-
-              if (state is BookListSuccess) {
-                List<BookResponse> books = state.books;
-                List<Cards> booksWidget = [];
-                for (var book in books) {
-                  booksWidget.add(Cards(
-                    book: book,
-                  ));
-                }
-                return ListView(
-                  children: [
-                    ...booksWidget,
-                  ],
-                );
-              } else {
-                _bookBloc.add(Loading());
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
-        ),
-      ),
+          body: BodyWidget()),
     );
   }
 }
@@ -111,6 +85,88 @@ class ListBooks extends StatelessWidget {
     final _bookBloc = BlocProvider.of<BookListBloc>(context);
     _bookBloc.add(Loading());
     return Text('data');
+  }
+}
+
+class BodyWidget extends StatefulWidget {
+  const BodyWidget({super.key});
+
+  @override
+  State<BodyWidget> createState() => _BodyState();
+}
+
+class _BodyState extends State<BodyWidget> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authService = getIt<JwtAuthenticationService>();
+
+    return BlocProvider<BookListBloc>(
+      create: (context) => BookListBloc(authService),
+      child: BlocBuilder<BookListBloc, BookListState>(
+        builder: (context, state) {
+          print(state);
+          final _bookBloc = BlocProvider.of<BookListBloc>(context);
+          List<BookResponse> books = [];
+
+          if (state is BookListSuccess) {
+            if (books.isEmpty) {
+              books = new List.from(state.books);
+            } else {
+              books.addAll(state.books);
+            }
+            List<Cards> booksWidget = [];
+            for (var book in books) {
+              booksWidget.add(Cards(
+                book: book,
+              ));
+            }
+            return ListView(
+              children: [
+                ...booksWidget,
+              ],
+              controller: _scrollController,
+            );
+          } else {
+            _bookBloc.add(Loading());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    //super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      print(
+          'IsBottommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+      context.read<BookListBloc>().add(Loading());
+      print(context.read<BookListBloc>().state);
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }
 
@@ -141,21 +197,37 @@ class Cards extends StatelessWidget {
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    book.title!,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 20,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          book.title,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 20,
+                          ),
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
                   ),
-                  Text(
-                    book.author!,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 145, 145, 145),
-                    ),
-                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          book.author,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 145, 145, 145),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               )
             ],

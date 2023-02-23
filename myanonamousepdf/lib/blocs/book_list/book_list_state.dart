@@ -12,11 +12,13 @@ class BookListLoading extends BookListState {}
 
 class BookListSuccess extends BookListState {
   final List<BookResponse> books;
+  final int currentPage;
+  final int maxPages;
 
-  BookListSuccess({required this.books});
+  BookListSuccess({required this.books, required this.currentPage, required this.maxPages});
 
   @override
-  List<Object> get props => [books];
+  List<Object> get props => [books, currentPage, maxPages];
 }
 
 class BookListFailure extends BookListState {

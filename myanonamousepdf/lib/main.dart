@@ -17,6 +17,8 @@ void main() {
   runApp(BlocProvider<AuthenticationBloc>(
     create: (context) {
       final authService = getIt<JwtAuthenticationService>();
+      late LocalStorageService _localStorageService;
+      
       return AuthenticationBloc(authService)..add(AppLoaded());
     },
     child: MyAnonaMousePdf(),
@@ -36,7 +38,6 @@ class MyAnonaMousePdf extends StatelessWidget {
         appBarTheme: AppBarTheme(
             backgroundColor: Color.fromARGB(255, 45, 45, 45).withOpacity(0.5),
             elevation: 0),
-        
       ),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
