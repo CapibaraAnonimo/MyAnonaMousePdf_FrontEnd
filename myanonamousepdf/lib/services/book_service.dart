@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:myanonamousepdf/models/models.dart';
 
 abstract class BookService {
-  Future<List<BookResponse>> getAllBooks();
+  Future<List<BookResponse>> getAllBooks(int page);
 }
 
 @Order(2)
@@ -26,11 +26,9 @@ class JwtBookService extends BookService {
   }
 
   @override
-  Future<List<BookResponse>> getAllBooks() async {
-    print("Se llega al servicio");
-    List<BookResponse> response = await _bookRepository.getAllBooks();
-    await _localStorageService.saveToDisk(
-        'bookList', jsonEncode(response));
+  Future<List<BookResponse>> getAllBooks(int page) async {
+    List<BookResponse> response = await _bookRepository.getAllBooks(page);
+    await _localStorageService.saveToDisk('bookList', jsonEncode(response));
     return response;
   }
 }

@@ -79,15 +79,6 @@ class BookListPage extends StatelessWidget {
   }
 }
 
-class ListBooks extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final _bookBloc = BlocProvider.of<BookListBloc>(context);
-    _bookBloc.add(Loading());
-    return Text('data');
-  }
-}
-
 class BodyWidget extends StatefulWidget {
   const BodyWidget({super.key});
 
@@ -97,6 +88,8 @@ class BodyWidget extends StatefulWidget {
 
 class _BodyState extends State<BodyWidget> {
   final _scrollController = ScrollController();
+  int currentPage = 0;
+  int maxPage = 0;
 
   @override
   void initState() {
@@ -107,39 +100,43 @@ class _BodyState extends State<BodyWidget> {
   @override
   Widget build(BuildContext context) {
     final authService = getIt<JwtAuthenticationService>();
+    List<BookResponse> books = [];
 
     return BlocProvider<BookListBloc>(
       create: (context) => BookListBloc(authService),
       child: BlocBuilder<BookListBloc, BookListState>(
         builder: (context, state) {
-          print(state);
           final _bookBloc = BlocProvider.of<BookListBloc>(context);
-          List<BookResponse> books = [];
 
           if (state is BookListSuccess) {
-            if (books.isEmpty) {
-              books = new List.from(state.books);
-            } else {
-              books.addAll(state.books);
-            }
-            List<Cards> booksWidget = [];
-            for (var book in books) {
-              booksWidget.add(Cards(
-                book: book,
-              ));
-            }
-            return ListView(
-              children: [
+            currentPage = state.currentPage;
+            maxPage = state.maxPages;
+            books.addAll(state.books);
+            return ListView.builder(
+              /*children: [
                 ...booksWidget,
-              ],
+              ],*/
               controller: _scrollController,
+              itemCount:
+                  books.length + 1, // agregue 1 para cargar más elementos
+              itemBuilder: (BuildContext context, int index) {
+                if (index < books.length) {
+                  return Cards(book: books[index]);
+                } else {
+                  // cargue más elementos
+                  if (currentPage < maxPage - 1) {
+                    _bookBloc.add(Loading(page: currentPage + 1));
+                    return CircularProgressIndicator(); // o cualquier indicador de carga
+                  }
+                }
+              },
             );
-          } else {
-            _bookBloc.add(Loading());
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          } else if (state is BookListInitial) {
+            _bookBloc.add(Loading(page: 0));
           }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
@@ -147,6 +144,7 @@ class _BodyState extends State<BodyWidget> {
 
   @override
   void dispose() {
+    super.dispose();
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
@@ -155,10 +153,7 @@ class _BodyState extends State<BodyWidget> {
 
   void _onScroll() {
     if (_isBottom) {
-      print(
-          'IsBottommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
-      context.read<BookListBloc>().add(Loading());
-      print(context.read<BookListBloc>().state);
+      //context.read<BookListBloc>().add(Loading(page: currentPage + 1));
     }
   }
 

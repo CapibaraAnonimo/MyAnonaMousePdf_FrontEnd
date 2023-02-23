@@ -15,7 +15,8 @@ class BookListSuccess extends BookListState {
   final int currentPage;
   final int maxPages;
 
-  BookListSuccess({required this.books, required this.currentPage, required this.maxPages});
+  BookListSuccess(
+      {required this.books, required this.currentPage, required this.maxPages});
 
   @override
   List<Object> get props => [books, currentPage, maxPages];

@@ -110,7 +110,6 @@ class JwtAuthenticationService extends AuthenticationService {
   @override
   Future<User> register(String username, String password, String verifyPassword,
       String email, String fullName) async {
-    print('register: ' + username);
     User response = await _authenticationRepository.doRegister(
         username = username,
         password = password,

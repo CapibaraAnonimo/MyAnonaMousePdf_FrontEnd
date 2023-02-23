@@ -8,7 +8,6 @@ import 'package:myanonamousepdf/models/models.dart';
 import 'package:myanonamousepdf/rest/rest.dart';
 import 'package:myanonamousepdf/services/localstorage_service.dart';
 
-
 @Order(-1)
 @singleton
 class BookRepository {
@@ -31,11 +30,10 @@ class BookRepository {
     return BookResponse.fromJson(jsonDecode(jsonResponse));
   }*/
 
-  Future<dynamic> getAllBooks() async {
-    String url = '/book';
+  Future<dynamic> getAllBooks(int page) async {
+    String url = '/book?page=';
 
-    print('Se llega al repositorio');
-    var jsonResponse = await _client.get(url);
+    var jsonResponse = await _client.get(url + page.toString());
     Map<String, dynamic> response = jsonDecode(jsonResponse);
     List<dynamic> list = response['content'];
     _localStorageService.saveToDisk('currentPage', response['number']);

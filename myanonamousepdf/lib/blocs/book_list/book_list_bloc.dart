@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:myanonamousepdf/models/models.dart';
-import '../../config/locator.dart';
+import 'package:myanonamousepdf/config/locator.dart';
+import 'package:myanonamousepdf/services/services.dart';
 import 'book_list_event.dart';
 import 'book_list_state.dart';
-import '../../exceptions/exceptions.dart';
-import '../../services/services.dart';
 
 class BookListBloc extends Bloc<BookListEvent, BookListState> {
   final AuthenticationService _authenticationService;
@@ -21,25 +19,20 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
     Loading event,
     Emitter<BookListState> emit,
   ) async {
-    print('Se llega al onAppLoaded');
     final bookService = getIt<JwtBookService>();
 
     emit(BookListLoading());
     try {
       await Future.delayed(Duration(milliseconds: 500)); // a simulated delay
       final currentUser = await _authenticationService.getCurrentUser();
-      final books = await bookService.getAllBooks();
+      final books = await bookService.getAllBooks(event.page);
       final currentPage = await _authenticationService.getCurrentPage();
       final maxPages = await _authenticationService.getMaxPages();
-      
+
       if (books.length >= 0) {
-        emit(BookListSuccess(books: books, currentPage: currentPage!, maxPages: maxPages!));
+        emit(BookListSuccess(
+            books: books, currentPage: currentPage!, maxPages: maxPages!));
       }
-      /*if (currentUser != null) {
-        emit(BookListAuthenticated(user: currentUser));
-      } else {
-        emit(BookListAuthenticated());
-      }*/
     } on Exception catch (e) {
       emit(
           BookListFailure(error: 'An unknown error occurred: ${e.toString()}'));
@@ -47,7 +40,6 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
   }
 
   __onBookPressed(BookPressed event, Emitter<BookListState> emit) async {
-    emit(BookListLoading());
     try {
       final user = await _authenticationService.getCurrentUser();
       if (user != null) {

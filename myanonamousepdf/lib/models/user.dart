@@ -47,25 +47,20 @@ class User {
 }
 
 reformat(String dateTime) {
-  print(dateTime);
   String day = dateTime.substring(0, 2);
-  print(day);
   String month = dateTime.substring(3, 5);
   String year = dateTime.substring(6, 10);
   String rest = dateTime.substring(11);
   String newString = year + '-' + month + '-' + day + ' ' + rest;
-  print(newString);
   return newString;
 }
 
 reformat2(String dateTime) {
-  print(dateTime);
   String year = dateTime.substring(0, 4);
   String month = dateTime.substring(5, 7);
   String day = dateTime.substring(8, 10);
   String rest = dateTime.substring(11);
   String newString = year + '-' + month + '-' + day + ' ' + rest;
-  print(newString);
   return newString;
 }
 

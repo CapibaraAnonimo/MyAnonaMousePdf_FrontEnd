@@ -39,7 +39,6 @@ class RegisterResponse {
     String year = dateTime.substring(6, 10);
     String rest = dateTime.substring(11);
     String newString = year + '-' + month + '-' + day + ' ' + rest;
-    print(newString);
     return newString;
   }
 
