@@ -1,8 +1,11 @@
+import 'models.dart';
+
 class LoginResponse {
   String? id;
   String? username;
   String? fullName;
-  String? createdAt;
+  //DateTime? createdAt;
+  String? avatar;
   String? token;
   String? refreshToken;
 
@@ -10,7 +13,8 @@ class LoginResponse {
       {this.id,
       this.username,
       this.fullName,
-      this.createdAt,
+      //this.createdAt,
+      this.avatar,
       this.token,
       this.refreshToken});
 
@@ -18,7 +22,8 @@ class LoginResponse {
     id = json['id'];
     username = json['username'];
     fullName = json['fullName'];
-    createdAt = json['createdAt'];
+    //createdAt = DateTime.tryParse(reformat2(json['createdAt']));
+    avatar = json['avatar'];
     token = json['token'];
     refreshToken = json['refreshToken'];
   }
@@ -28,6 +33,8 @@ class LoginResponse {
     data['id'] = id;
     data['username'] = username;
     data['fullName'] = fullName;
+    //data['createdAt'] = dateToString(createdAt!);
+    data['avatar'] = avatar;
     data['token'] = token;
     data['refreshToken'] = refreshToken;
     return data;

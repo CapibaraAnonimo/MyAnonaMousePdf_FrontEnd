@@ -1,4 +1,3 @@
-
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:get_it/get_it.dart';
@@ -13,12 +12,9 @@ abstract class InjectableSharedPreferences {
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 }*/
 
-
-
 //@Order(-1)
 //@singleton
 class LocalStorageService {
-
   const LocalStorageService();
 
   static late LocalStorageService _instance;
@@ -33,45 +29,40 @@ class LocalStorageService {
   }*/
 
   //LocalStorageService() {
-    //_preferences = GetIt.I.get<SharedPreferences>();
+  //_preferences = GetIt.I.get<SharedPreferences>();
   //}
 
   static Future<LocalStorageService> getInstance() async {
-    print("Aquí se entra");
-
     //if (_preferences == null) {
-      _preferences = await SharedPreferences.getInstance();
+    _preferences = await SharedPreferences.getInstance();
     //}
-
-    print("Aquí se llega");
 
     //if (_instance == null) {
-      _instance = LocalStorageService();
+    _instance = LocalStorageService();
     //}
-    
+
     return _instance;
   }
 
-
   dynamic getFromDisk(String key) {
-    var value  = _preferences.get(key);
+    var value = _preferences.get(key);
     return value;
   }
 
   Future<void> saveToDisk<T>(String key, T content) async {
-    if(content is String) {
+    if (content is String) {
       await _preferences.setString(key, content);
     }
-    if(content is bool) {
+    if (content is bool) {
       await _preferences.setBool(key, content);
     }
-    if(content is int) {
+    if (content is int) {
       await _preferences.setInt(key, content);
     }
-    if(content is double) {
+    if (content is double) {
       await _preferences.setDouble(key, content);
     }
-    if(content is List<String>) {
+    if (content is List<String>) {
       await _preferences.setStringList(key, content);
     }
   }
@@ -79,5 +70,4 @@ class LocalStorageService {
   Future<void> deleteFromDisk(String key) async {
     await _preferences.remove(key);
   }
-
 }

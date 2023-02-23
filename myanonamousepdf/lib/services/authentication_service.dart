@@ -15,6 +15,8 @@ abstract class AuthenticationService {
   Future<User?> register(String username, String password,
       String verifyPassword, String email, String fullName);
   Future<void> signOut();
+  Future<int?> getCurrentPage();
+  Future<int?> getMaxPages();
 }
 /*
 class FakeAuthenticationService extends AuthenticationService {
@@ -56,34 +58,59 @@ class JwtAuthenticationService extends AuthenticationService {
 
   @override
   Future<User?> getCurrentUser() async {
+    //_localStorageService..deleteFromDisk("user");
     String? loggedUser = _localStorageService.getFromDisk("user");
     if (loggedUser != null) {
-      var user = LoginResponse.fromJson(jsonDecode(loggedUser));
-      return User(
-          email: user.username ?? "",
-          name: user.fullName ?? "",
-          accessToken: user.token ?? "");
+      var user = User.fromJson(jsonDecode(loggedUser));
+      return user;
+      /*return User(
+          id: user.id ?? "",
+          name: user.fullName ?? '',
+          userName: user.username ?? '',
+          createdAt: user.createdAt ?? DateTime.now(),
+          avatar: user.avatar,
+          accessToken: user.token ?? '');*/
+    }
+    return null;
+  }
+
+  @override
+  Future<int?> getCurrentPage() async {
+    int currentPage = _localStorageService.getFromDisk("currentPage");
+    if (currentPage != null) {
+      return currentPage;
+    }
+    return null;
+  }
+
+  @override
+  Future<int?> getMaxPages() async {
+    int maxPages = _localStorageService.getFromDisk("maxPages");
+    if (maxPages != null) {
+      return maxPages;
     }
     return null;
   }
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
-    LoginResponse response =
-        await _authenticationRepository.doLogin(email, password);
+    User response = await _authenticationRepository.doLogin(email, password);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-    return User(
-        email: response.username ?? "",
-        name: response.fullName ?? "",
-        accessToken: response.token ?? "");
+    return response;
+    /*return User(
+          id: response.id ?? "",
+          name: response.fullName ?? '',
+          userName: response.username ?? '',
+          createdAt: response.createdAt ?? DateTime.now(),
+          avatar: response.avatar,
+          accessToken: response.token ?? '');*/
   }
 
   @override
   Future<User> register(String username, String password, String verifyPassword,
       String email, String fullName) async {
-    print('register: ' + username);
-    RegisterResponse response = await _authenticationRepository.doRegister(
+    User response = await _authenticationRepository.doRegister(
         username = username,
         password = password,
         verifyPassword = verifyPassword,
@@ -91,10 +118,14 @@ class JwtAuthenticationService extends AuthenticationService {
         fullName = fullName);
     await _localStorageService.saveToDisk(
         'user', jsonEncode(response.toJson()));
-    return User(
-        name: response.fullName ?? '',
-        email: response.userName ?? '',
-        accessToken: response.token ?? '');
+    return response;
+    /*return User(
+          id: response.id ?? "",
+          name: response.fullName ?? '',
+          userName: response.userName ?? '',
+          //createdAt: response.createdAt ?? DateTime.now(),
+          avatar: response.avatar,
+          accessToken: response.token ?? '');*/
   }
 
   @override
