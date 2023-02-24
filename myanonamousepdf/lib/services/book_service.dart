@@ -9,6 +9,7 @@ import 'package:myanonamousepdf/models/models.dart';
 
 abstract class BookService {
   Future<List<BookResponse>> getAllBooks(int page);
+  Future<BookResponse> getBookById(String id);
 }
 
 @Order(2)
@@ -30,5 +31,11 @@ class JwtBookService extends BookService {
     List<BookResponse> response = await _bookRepository.getAllBooks(page);
     await _localStorageService.saveToDisk('bookList', jsonEncode(response));
     return response;
+  }
+
+  @override
+  Future<BookResponse> getBookById(String id) async {
+    BookResponse book = await _bookRepository.getBookById(id);
+    return book;
   }
 }
