@@ -22,14 +22,6 @@ class BookRepository {
     //_client = RestClient();
   }
 
-  /*Future<dynamic> doRegister(String username, String password,
-      String verifyPassword, String email, String fullName) async {
-    String url = '/book';
-
-    var jsonResponse = await _client.get(url);
-    return BookResponse.fromJson(jsonDecode(jsonResponse));
-  }*/
-
   Future<dynamic> getAllBooks(int page) async {
     String url = '/book?page=';
 
@@ -44,5 +36,13 @@ class BookRepository {
     }
     return bookList;
     //return BookResponse.fromJson(jsonDecode(jsonResponse));
+  }
+
+  Future<dynamic> getBookById(String id) async {
+    String url = '/book/';
+
+    var jsonResponse = await _client.get(url + id);
+    Map<String, dynamic> response = jsonDecode(jsonResponse);
+    return BookResponse.fromJson(response);
   }
 }

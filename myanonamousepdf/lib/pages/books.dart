@@ -1,15 +1,16 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:myanonamousepdf/blocs/authentication/authentication.dart';
+import 'package:myanonamousepdf/blocs/book_list/book_list.dart';
 import 'package:myanonamousepdf/config/locator.dart';
 import 'package:myanonamousepdf/models/book.dart';
+import 'package:myanonamousepdf/models/user.dart';
+import 'package:myanonamousepdf/pages/book_details.dart';
 import 'package:myanonamousepdf/pages/login_page.dart';
-import '../blocs/book_list/book_list.dart';
-import '../models/user.dart';
-import '../services/services.dart';
+import 'package:myanonamousepdf/services/authentication_service.dart';
 
 class BookListPage extends StatelessWidget {
   BuildContext context;
@@ -177,8 +178,16 @@ class Cards extends StatelessWidget {
       child: Card(
         color: Color.fromARGB(255, 32, 32, 32),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookDetails(id: book.id),
+              ),
+            );
+          },
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -193,38 +202,84 @@ class Cards extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.loose,
-                        child: Text(
-                          book.title,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontSize: 20,
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                    width: 275,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.loose,
+                          child: Text(
+                            book.title,
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 20,
+                            ),
+                            softWrap: false,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          softWrap: true,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          book.author,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 145, 145, 145),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                    width: 275,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            book.author,
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 145, 145, 145),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    width: 275,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          child: DecoratedBox(
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 202, 145, 58),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                                child: Text(
+                                  book.category,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              )),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              const WidgetSpan(
+                                  child: Icon(
+                                Icons.download,
+                                color: Colors.white,
+                                size: 20,
+                              )),
+                              TextSpan(
+                                  text: ' ${book.amountDownloads.toString()}',
+                                  style: TextStyle(fontSize: 20))
+                            ],
                           ),
                         ),
-                      )
-                    ],
-                  )
+                      ],
+                    ),
+                  ),
                 ],
               )
             ],
