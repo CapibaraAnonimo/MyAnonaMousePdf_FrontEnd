@@ -197,6 +197,8 @@ class Cards extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
+                        flex: 1,
+                        fit: FlexFit.loose,
                         child: Text(
                           book.title,
                           style: const TextStyle(
