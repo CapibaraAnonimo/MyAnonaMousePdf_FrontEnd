@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:myanonamousepdf_api/myanonamousepdf_api.dart';
 import 'package:myanonamousepdf_repository/myanonamousepdf_repository.dart'
     as repo;
@@ -11,9 +13,12 @@ class MyanonamousepdfRepository {
   final MyanonamousepdfApiClient _myanonamousepdfApiClient;
 
   Future<repo.JwtUserResponse> login(String auth) async {
-    final loggedUser = await _myanonamousepdfApiClient.login(auth);
+    final response = await _myanonamousepdfApiClient.post('auth/login', auth);
 
-    return repo.JwtUserResponse(
+    final loggedUser = repo.JwtUserResponse.fromJson(response);
+    return loggedUser;
+
+    /*return repo.JwtUserResponse(
       avatar: loggedUser.avatar,
       createdAt: loggedUser.createdAt,
       fullName: loggedUser.fullName,
@@ -21,6 +26,13 @@ class MyanonamousepdfRepository {
       refreshToken: loggedUser.refreshToken,
       token: loggedUser.token,
       userName: loggedUser.userName,
-    );
+    );*/
+  }
+
+  Future<repo.JwtUserResponse> register(String auth) async {
+    final response = await _myanonamousepdfApiClient.post('auth/register', auth);
+
+    final registerUser = repo.JwtUserResponse.fromJson(response);
+    return registerUser;
   }
 }
